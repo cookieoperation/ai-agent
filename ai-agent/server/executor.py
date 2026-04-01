@@ -4,10 +4,13 @@ from agent import decide_action
 def run_agent(prompt):
     decision = decide_action(prompt)
 
-    if decision["action"] == "create_file":
-        return create_file(decision["path"], decision["content"])
+    try:
+        if decision["action"] == "create_file":
+            return create_file(decision["path"], decision["content"])
 
-    if decision["action"] == "run_command":
-        return run_command(decision["command"])
+        if decision["action"] == "run_command":
+            return run_command(decision["command"])
+    except (OSError, ValueError) as exc:
+        return f"Error: {exc}"
 
     return "No action taken"
