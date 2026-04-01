@@ -1,6 +1,7 @@
 from tools import *
 from agent import decide_action
 
+
 def run_agent(prompt):
     decision = decide_action(prompt)
 
@@ -13,4 +14,4 @@ def run_agent(prompt):
     except (OSError, ValueError) as exc:
         return f"Error: {exc}"
 
-    return "No action taken"
+    return decision.get("message", "No action taken")

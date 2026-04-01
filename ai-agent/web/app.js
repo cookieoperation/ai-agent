@@ -1,14 +1,24 @@
 async function runAgent() {
+  const output = document.getElementById("output");
   const prompt = document.getElementById("prompt").value;
 
-  const res = await fetch("/run", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ prompt })
-  });
+  try {
+    const res = await fetch("/run", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ prompt })
+    });
 
-  const data = await res.json();
-  document.getElementById("output").textContent = data.result;
+    const data = await res.json();
+    if (!res.ok) {
+      output.textContent = data.error || "Request failed";
+      return;
+    }
+
+    output.textContent = data.result || "No output";
+  } catch (err) {
+    output.textContent = `Network error: ${err.message}`;
+  }
 }
